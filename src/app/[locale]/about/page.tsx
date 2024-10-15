@@ -119,7 +119,7 @@ export default function About(
                             <Icon
                                 onBackground="accent-weak"
                                 name="globe"/>
-                            {person.location}
+                            {"America/Dallas"}
                         </Flex>
                         { person.languages.length > 0 && (
                             <Flex
@@ -305,11 +305,23 @@ export default function About(
                                         key={`${institution.name}-${index}`}
                                         fillWidth gap="4"
                                         direction="column">
-                                        <Text
-                                            id={institution.name}
-                                            variant="heading-strong-l">
-                                            {institution.name}
-                                        </Text>
+                                        <Flex
+                                            fillWidth
+                                            justifyContent="space-between"
+                                            alignItems="flex-end"
+                                            marginBottom="4">
+                                            <Text
+                                                id={institution.name}
+                                                variant="heading-strong-l">
+                                                {institution.name}
+                                            </Text>
+                                            <Text
+                                                variant="heading-default-xs"
+                                                onBackground="neutral-weak">
+                                                {institution.timeframe}
+                                            </Text>
+                                        </Flex>
+                                        
                                         <Text
                                             variant="heading-default-xs"
                                             onBackground="neutral-weak">

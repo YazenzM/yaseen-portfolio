@@ -13,8 +13,8 @@ const routes = {
     '/':        true,
     '/about':   true,
     '/work':    true,
-    '/blog':    true,
-    '/gallery': true,
+    '/blog':    false,
+    '/gallery': false,
 }
 
 // Enable password protection on selected routes
@@ -31,9 +31,9 @@ const effects = {
 
 const style = {
     theme:       'dark',         // dark | light
-    neutral:     'gray',         // sand | gray | slate
-    brand:       'aqua',         // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
-    accent:      'yellow',       // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
+    neutral:     'slate',         // sand | gray | slate
+    brand:       'blue',         // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
+    accent:      'red',       // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
     solid:       'contrast',     // color | contrast
     solidStyle:  'flat',         // flat | plastic
     border:      'playful',      // rounded | playful | conservative
@@ -42,15 +42,15 @@ const style = {
 }
 
 const display = {
-    location: true,
-    time:     true
+    location: false,
+    time:     false
 }
 
 const mailchimp = {
     action: 'https://url/subscribe/post?parameters',
     effects: {
         gradient: true,
-        dots:     false,
+        dots:     true,
         lines:    true,
     }
 }
