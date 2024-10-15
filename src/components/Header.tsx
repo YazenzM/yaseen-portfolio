@@ -77,15 +77,17 @@ export const Header = () => {
             zIndex={9}
             fillWidth padding="8"
             justifyContent="center">
+            
             <Flex
                 hide="s"
                 paddingLeft="12" fillWidth
                 alignItems="center"
                 textVariant="body-default-s">
                 { display.location && (
-                    <>{person.location}</>
+                    <>America/Dallas</>
                 )}
             </Flex>
+            
             <Flex
                 background="surface" border="neutral-medium" borderStyle="solid-1" radius="m-4" shadow="l"
                 padding="4"
