@@ -11,6 +11,15 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+    async redirects() {
+        return [
+            {
+                source: '/',
+                destination: '/about',
+                permanent: true, // true for 301 permanent redirect; false for 302 temporary
+            },
+        ];
+    },
 };
 
 export default withNextIntl(withMDX(nextConfig));
