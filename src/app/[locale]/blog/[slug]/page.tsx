@@ -1,18 +1,19 @@
+import { use } from 'react';
 import { notFound } from 'next/navigation'
 import { CustomMDX } from '@/components/mdx'
 import { formatDate, getPosts } from '@/app/utils'
 import { Avatar, Button, Flex, Heading, Text } from '@/once-ui/components'
 
 import { baseURL, renderContent } from '@/app/resources'
-import { unstable_setRequestLocale } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
 import { routing } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 
 interface BlogParams {
-    params: { 
+    params: Promise<{
         slug: string;
 		locale: string;
-    };
+    }>;
 }
 
 export async function generateStaticParams() {
@@ -33,11 +34,12 @@ export async function generateStaticParams() {
     return allPosts;
 }
 
-export function generateMetadata({ params: { slug, locale } }: BlogParams) {
+export async function generateMetadata({ params }: BlogParams) {
+	const { slug, locale } = await params;
 	let post = getPosts(['src', 'app', '[locale]', 'blog', 'posts', locale]).find((post) => post.slug === slug)
 
 	if (!post) {
-		return
+		notFound()
 	}
 
 	let {
@@ -75,8 +77,9 @@ export function generateMetadata({ params: { slug, locale } }: BlogParams) {
 }
 
 export default function Blog({ params }: BlogParams) {
-	unstable_setRequestLocale(params.locale);
-	let post = getPosts(['src', 'app', '[locale]', 'blog', 'posts', params.locale]).find((post) => post.slug === params.slug)
+	const { slug, locale } = use(params);
+	setRequestLocale(locale);
+	let post = getPosts(['src', 'app', '[locale]', 'blog', 'posts', locale]).find((post) => post.slug === slug)
 
 	if (!post) {
 		notFound()
@@ -104,7 +107,7 @@ export default function Blog({ params }: BlogParams) {
 						image: post.metadata.image
 							? `https://${baseURL}${post.metadata.image}`
 							: `https://${baseURL}/og?title=${post.metadata.title}`,
-							url: `https://${baseURL}/${params.locale}/blog/${post.slug}`,
+							url: `https://${baseURL}/${locale}/blog/${post.slug}`,
 						author: {
 							'@type': 'Person',
 							name: person.name,
@@ -113,7 +116,7 @@ export default function Blog({ params }: BlogParams) {
 				}}
 			/>
 			<Button
-				href={`/${params.locale}/blog`}
+				href={`/${locale}/blog`}
 				variant="tertiary"
 				size="s"
 				prefixIcon="chevronLeft">

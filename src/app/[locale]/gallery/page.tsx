@@ -1,12 +1,14 @@
+import { use } from "react";
 import { Flex } from "@/once-ui/components";
 import MasonryGrid from "@/components/gallery/MasonryGrid";
 import { baseURL, renderContent } from "@/app/resources";
-import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { useTranslations } from "next-intl";
 
 export async function generateMetadata(
-	{params: {locale}}: { params: { locale: string }}
+	{ params }: { params: Promise<{ locale: string }> }
 ) {
+	const { locale } = await params;
 
 	const t = await getTranslations();
 	const { gallery } = renderContent(t);
@@ -40,9 +42,10 @@ export async function generateMetadata(
 }
 
 export default function Gallery(
-	{ params: {locale}}: { params: { locale: string }}
+	{ params }: { params: Promise<{ locale: string }> }
 ) {
-	unstable_setRequestLocale(locale);
+	const { locale } = use(params);
+	setRequestLocale(locale);
 	const t = useTranslations();
 	const { gallery, person } = renderContent(t);
     return (

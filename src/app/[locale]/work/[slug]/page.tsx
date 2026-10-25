@@ -3,14 +3,13 @@ import { Button, Flex, Heading, Text } from '@/once-ui/components'
 import { baseURL, renderContent } from '@/app/resources';
 import { work as workContent } from '@/app/resources/content';
 import { routing } from '@/i18n/routing';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
-import { useTranslations } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface WorkParams {
-    params: {
+    params: Promise<{
         slug: string;
 		locale: string;
-    };
+    }>;
 }
 
 // Every project page is built ahead of time; any other slug is a real 404
@@ -25,13 +24,14 @@ export async function generateStaticParams() {
 	);
 }
 
-export async function generateMetadata({ params: { slug, locale } }: WorkParams) {
+export async function generateMetadata({ params }: WorkParams) {
+	const { slug, locale } = await params;
 	const t = await getTranslations();
 	const { work } = renderContent(t);
 	const project = work.projects.find((project) => project.slug === slug);
 
 	if (!project) {
-		return
+		notFound()
 	}
 
 	const title = project.title;
@@ -61,12 +61,13 @@ export async function generateMetadata({ params: { slug, locale } }: WorkParams)
 	}
 }
 
-export default function Project({ params }: WorkParams) {
-	unstable_setRequestLocale(params.locale);
+export default async function Project({ params }: WorkParams) {
+	const { slug, locale } = await params;
+	setRequestLocale(locale);
 
-	const t = useTranslations();
+	const t = await getTranslations();
 	const { person, work } = renderContent(t);
-	const project = work.projects.find((project) => project.slug === params.slug);
+	const project = work.projects.find((project) => project.slug === slug);
 
 	if (!project) {
 		notFound()
@@ -89,7 +90,7 @@ export default function Project({ params }: WorkParams) {
 						headline: project.title,
 						description: project.summary,
 						image: `https://${baseURL}/og?title=${encodeURIComponent(project.title)}`,
-						url: `https://${baseURL}/${params.locale}/work/${project.slug}`,
+						url: `https://${baseURL}/${locale}/work/${project.slug}`,
 						author: {
 							'@type': 'Person',
 							name: person.name,
@@ -101,7 +102,7 @@ export default function Project({ params }: WorkParams) {
 				fillWidth maxWidth="xs" gap="16"
 				direction="column">
 				<Button
-					href={`/${params.locale}/work`}
+					href={`/${locale}/work`}
 					variant="tertiary"
 					size="s"
 					prefixIcon="chevronLeft">
