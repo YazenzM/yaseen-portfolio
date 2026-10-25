@@ -14,11 +14,11 @@
 	"dependencies": {
 		"@floating-ui/react-dom": "^2.1.1",
 		"@mdx-js/loader": "^3.0.1",
-		"@next/mdx": "^14.2.5",
+		"@next/mdx": "^14.2.35",
 		"classnames": "^2.5.1",
 		"cookie": "^0.6.0",
 		"gray-matter": "^4.0.3",
-		"next": "^14.2.4",
+		"next": "^14.2.35",
 		"next-intl": "^3.20.0",
 		"next-mdx-remote": "^6.0.0",
 		"postcss": "^8.4.39",
@@ -39,7 +39,7 @@
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
 		"eslint": "^8.57.1",
-		"eslint-config-next": "^14.2.5",
+		"eslint-config-next": "^14.2.35",
 		"postcss-custom-media": "^10.0.7",
 		"postcss-flexbugs-fixes": "^5.0.2",
 		"typescript": "^5"
