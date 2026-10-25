@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { baseURL, renderContent } from '@/app/resources';
 import { getTranslations } from 'next-intl/server';
+import { routing } from '@/i18n/routing';
 
 export const runtime = 'edge';
 
@@ -12,7 +13,8 @@ export async function GET(request: Request) {
     ).then((res) => res.arrayBuffer());
     const fontData = await font;
 
-    const t = await getTranslations();
+    // /og sits outside the locale middleware, so pass the locale explicitly
+    const t = await getTranslations({ locale: routing.defaultLocale });
     const { person } = renderContent(t);
 
     return new ImageResponse(
