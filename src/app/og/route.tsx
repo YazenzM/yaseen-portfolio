@@ -1,17 +1,16 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { ImageResponse } from 'next/og'
 import { baseURL, renderContent } from '@/app/resources';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 
-export const runtime = 'edge';
+// Runs on the Node.js runtime: the Edge version outgrew Vercel's 1 MB Edge Function limit
 
 export async function GET(request: Request) {
     let url = new URL(request.url)
     let title = url.searchParams.get('title') || 'Portfolio'
-    const font = fetch(
-        new URL('../../../public/fonts/Inter.ttf', import.meta.url)
-    ).then((res) => res.arrayBuffer());
-    const fontData = await font;
+    const fontData = await readFile(join(process.cwd(), 'public/fonts/Inter.ttf'));
 
     // /og sits outside the locale middleware, so pass the locale explicitly
     const t = await getTranslations({ locale: routing.defaultLocale });
