@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { use } from 'react';
 
 import { Heading, Flex, Text, Button,  Avatar, RevealFx } from '@/once-ui/components';
 import { Projects } from '@/components/work/Projects';
@@ -6,12 +6,13 @@ import { Projects } from '@/components/work/Projects';
 import { baseURL, routes, renderContent } from '@/app/resources'; 
 import { Mailchimp } from '@/components';
 import { Posts } from '@/components/blog/Posts';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 
 export async function generateMetadata(
-	{params: {locale}}: { params: { locale: string }}
+	{ params }: { params: Promise<{ locale: string }> }
 ) {
+	const { locale } = await params;
 	const t = await getTranslations();
     const { home } = renderContent(t);
 	const title = home.title;
@@ -43,9 +44,10 @@ export async function generateMetadata(
 }
 
 export default function Home(
-	{ params: {locale}}: { params: { locale: string }}
+	{ params }: { params: Promise<{ locale: string }> }
 ) {
-	unstable_setRequestLocale(locale);
+	const { locale } = use(params);
+	setRequestLocale(locale);
 	const t = useTranslations();
 	const { home, about, person, newsletter } = renderContent(t);
 	return (
