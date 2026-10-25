@@ -1,10 +1,9 @@
 import { notFound } from 'next/navigation'
-import { CustomMDX } from '@/components/mdx'
-import { formatDate, getPosts } from '@/app/utils'
-import { AvatarGroup, Button, Flex, Heading, SmartImage, Text } from '@/once-ui/components'
+import { Button, Flex, Heading, Text } from '@/once-ui/components'
 import { baseURL, renderContent } from '@/app/resources';
+import { work as workContent } from '@/app/resources/content';
 import { routing } from '@/i18n/routing';
-import { unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 
 interface WorkParams {
@@ -14,54 +13,39 @@ interface WorkParams {
     };
 }
 
+// Every project page is built ahead of time; any other slug is a real 404
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
-	const locales = routing.locales;
-    
-    // Create an array to store all posts from all locales
-    const allPosts = [];
-
-    // Fetch posts for each locale
-    for (const locale of locales) {
-        const posts = getPosts(['src', 'app', '[locale]', 'work', 'projects', locale]);
-        allPosts.push(...posts.map(post => ({
-            slug: post.slug,
-            locale: locale,
-        })));
-    }
-
-    return allPosts;
+	return routing.locales.flatMap((locale) =>
+		workContent.projects.map((project) => ({
+			slug: project.slug,
+			locale: locale,
+		}))
+	);
 }
 
-export function generateMetadata({ params: { slug, locale } }: WorkParams) {
-	let post = getPosts(['src', 'app', '[locale]', 'work', 'projects', locale]).find((post) => post.slug === slug)
-	
-	if (!post) {
+export async function generateMetadata({ params: { slug, locale } }: WorkParams) {
+	const t = await getTranslations();
+	const { work } = renderContent(t);
+	const project = work.projects.find((project) => project.slug === slug);
+
+	if (!project) {
 		return
 	}
 
-	let {
-		title,
-		publishedAt: publishedTime,
-		summary: description,
-		images,
-		image,
-		team,
-	} = post.metadata
-	let ogImage = image
-		? `https://${baseURL}${image}`
-		: `https://${baseURL}/og?title=${title}`;
+	const title = project.title;
+	const description = project.summary;
+	const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
 
 	return {
 		title,
 		description,
-		images,
-		team,
 		openGraph: {
 			title,
 			description,
 			type: 'article',
-			publishedTime,
-			url: `https://${baseURL}/${locale}/work/${post.slug}`,
+			url: `https://${baseURL}/${locale}/work/${project.slug}`,
 			images: [
 				{
 					url: ogImage,
@@ -79,18 +63,16 @@ export function generateMetadata({ params: { slug, locale } }: WorkParams) {
 
 export default function Project({ params }: WorkParams) {
 	unstable_setRequestLocale(params.locale);
-	let post = getPosts(['src', 'app', '[locale]', 'work', 'projects', params.locale]).find((post) => post.slug === params.slug)
 
-	if (!post) {
+	const t = useTranslations();
+	const { person, work } = renderContent(t);
+	const project = work.projects.find((project) => project.slug === params.slug);
+
+	if (!project) {
 		notFound()
 	}
 
-	const t = useTranslations();
-	const { person } = renderContent(t);
-
-	const avatars = post.metadata.team?.map((person) => ({
-        src: person.avatar,
-    })) || [];
+	const meta = [project.date, project.stack].filter(Boolean).join(' · ');
 
 	return (
 		<Flex as="section"
@@ -103,15 +85,11 @@ export default function Project({ params }: WorkParams) {
 				dangerouslySetInnerHTML={{
 					__html: JSON.stringify({
 						'@context': 'https://schema.org',
-						'@type': 'BlogPosting',
-						headline: post.metadata.title,
-						datePublished: post.metadata.publishedAt,
-						dateModified: post.metadata.publishedAt,
-						description: post.metadata.summary,
-						image: post.metadata.image
-							? `https://${baseURL}${post.metadata.image}`
-							: `https://${baseURL}/og?title=${post.metadata.title}`,
-							url: `https://${baseURL}/${params.locale}/work/${post.slug}`,
+						'@type': 'CreativeWork',
+						headline: project.title,
+						description: project.summary,
+						image: `https://${baseURL}/og?title=${encodeURIComponent(project.title)}`,
+						url: `https://${baseURL}/${params.locale}/work/${project.slug}`,
 						author: {
 							'@type': 'Person',
 							name: person.name,
@@ -131,36 +109,60 @@ export default function Project({ params }: WorkParams) {
 				</Button>
 				<Heading
 					variant="display-strong-s">
-					{post.metadata.title}
+					{project.title}
 				</Heading>
+				{meta && (
+					<Text
+						variant="body-default-s"
+						onBackground="neutral-weak">
+						{meta}
+					</Text>
+				)}
+				{project.summary && (
+					<Text
+						variant="body-default-l"
+						onBackground="neutral-medium">
+						{project.summary}
+					</Text>
+				)}
+				{(project.demoUrl || project.github) && (
+					<Flex
+						gap="8" wrap>
+						{project.demoUrl && (
+							<Button
+								href={project.demoUrl}
+								variant="primary"
+								size="s"
+								suffixIcon="arrowUpRight"
+								label="Live demo"/>
+						)}
+						{project.github && (
+							<Button
+								href={project.github}
+								variant="secondary"
+								size="s"
+								prefixIcon="github"
+								label="View on GitHub"/>
+						)}
+					</Flex>
+				)}
 			</Flex>
-			{post.metadata.images.length > 0 && (
-				<SmartImage
-					aspectRatio="16 / 9"
-					radius="m"
-					alt="image"
-					src={post.metadata.images[0]}/>
-			)}
-			<Flex style={{margin: 'auto'}}
+			<Flex
 				as="article"
 				maxWidth="xs" fillWidth
 				direction="column">
 				<Flex
-					gap="12" marginBottom="24"
-					alignItems="center">
-					{ post.metadata.team && (
-						<AvatarGroup
-							reverseOrder
-							avatars={avatars}
-							size="m"/>
-					)}
-					<Text
-						variant="body-default-s"
-						onBackground="neutral-weak">
-						{formatDate(post.metadata.publishedAt)}
-					</Text>
+					as="ul"
+					direction="column" gap="16">
+					{project.bullets.map((bullet: string, index: number) => (
+						<Text
+							as="li"
+							variant="body-default-m"
+							key={`${project.slug}-${index}`}>
+							{bullet}
+						</Text>
+					))}
 				</Flex>
-				<CustomMDX source={post.content} />
 			</Flex>
 		</Flex>
 	)

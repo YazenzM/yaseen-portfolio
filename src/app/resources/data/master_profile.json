@@ -1,0 +1,205 @@
+{
+  "basics": {
+    "name": "Yaseen Mohammed",
+    "title": "",
+    "location": "Plano, TX",
+    "contact": "Yaseenam3@gmail.com | linkedin.com/in/yaseenam | github.com/YazenzM"
+  },
+  "education": [
+    {
+      "school": "The University of Texas at Dallas",
+      "degree": "Master of Science, Business Analytics and Artificial Intelligence",
+      "date": "Expected December 2026"
+    },
+    {
+      "school": "The University of Texas at Dallas",
+      "degree": "Bachelor of Science, Data Science",
+      "date": "December 2023"
+    }
+  ],
+  "skills": [
+    {
+      "category": "Certifications",
+      "details": "AWS Certified Machine Learning, Microsoft Azure Data Scientist Associate"
+    },
+    {
+      "category": "Programming",
+      "details": "SQL, Python, R, Scala, Java, C++, C#, JavaScript, TypeScript"
+    },
+    {
+      "category": "Machine Learning",
+      "details": "Scikit-learn, XGBoost, PyTorch, TensorFlow/Keras, Feature Engineering, Forecasting"
+    },
+    {
+      "category": "AI & LLM",
+      "details": "RAG, LLM Integration, Prompt Engineering, NLP, Text-to-SQL"
+    },
+    {
+      "category": "Statistics",
+      "details": "Hypothesis Testing, Bootstrap, Cross-Validation, Backtesting, Calibration, Signal Processing"
+    },
+    {
+      "category": "Analytics & BI",
+      "details": "PowerBI, Tableau, MS Excel, RStudio, pandas, NumPy, SciPy"
+    },
+    {
+      "category": "Data Engineering",
+      "details": "Spark, PySpark, Snowflake, BigQuery, PostgreSQL, MySQL, MongoDB, REST APIs, Azure, AWS"
+    }
+  ],
+  "experience": [
+    {
+      "company": "Zinzu, Redmond, WA",
+      "title": "Data Scientist",
+      "date": "March 2024 – Present",
+      "bullets": [
+        "Saved clients time by letting them query their e-commerce data in plain English instead of menus or SQL, through an LLM Text-to-SQL pipeline (GPT API, prompt engineering) that generates executable SQL with 94% accuracy.",
+        "Helped clients find more prospective customers with a product feature that scores each visitor's conversion probability, using a machine learning model trained on user-journey data to flag high-intent visitors.",
+        "Surface irregular traffic spikes and dips across every site a client runs with an automated statistical anomaly-detection pipeline over web clickstream event sequences.",
+        "Process 100 GB of GA4 events per day in BigQuery with distributed PySpark ETL pipelines, turning raw event streams into analysis-ready user-journey sequences for clickstream analytics.",
+        "Built and maintain the Azure data layer (Azure SQL, Cosmos DB, Blob Storage) that holds 72% of the company's operational data.",
+        "Cut manual server work by 65% by automating provisioning and maintenance with Bash, Azure Monitor, Azure load balancing and GitHub continuous deployment.",
+        "Develop 50 RESTful APIs and the backend services behind the company's website and app, load-balanced to serve concurrent users.",
+        "Informed the launch of an agriculture app for farms in India with a 21-page geospatial analytics report to the CEO on use cases, implementation paths and competitors."
+      ],
+      "title_options": [
+        "Data Scientist",
+        "Data Engineer"
+      ]
+    },
+    {
+      "company": "Standard Aero, Dallas, TX",
+      "title": "Business Analyst Intern",
+      "date": "February – August 2025 · February – August 2026",
+      "bullets": [
+        "Gave a ~600-person business unit self-serve visibility into employee performance and department KPIs by gathering requirements from 4 departments and building Power BI dashboards.",
+        "Unified Snowflake and Oracle data for company reporting by designing SQL pipelines that transform source data into analysis-ready tables.",
+        "Traced budget variances and cost overruns to their root causes using statistical forecasts of monthly KPIs and spending built from historical data and the known client pipeline.",
+        "Let leadership track the company's financial health against plan by extending the billing report with quarterly budgets, performance targets and new KPIs.",
+        "Protected sensitive performance data with Power BI row-level security, so each lead and manager sees only their own team's metrics.",
+        "Mentored a supply chain intern from kickoff through delivery of a new reporting pipeline."
+      ]
+    },
+    {
+      "company": "Autix Automotive, Dallas, TX",
+      "title": "Data Scientist Intern",
+      "date": "August 2023 – December 2023",
+      "bullets": [
+        "Helped customers price cars against the market with less research time by improving prediction accuracy 62% with segment-specific models, luxury to economy, built in Scikit-learn and XGBoost with ensemble methods.",
+        "Saved $80k in external software costs and raised the dataset's predictive power by 27% by using the GPT API to extract structured features from unstructured car descriptions.",
+        "Automated collection of market car data with web-scraping pipelines into Azure Blob Storage, keeping the pricing models supplied with clean data."
+      ]
+    },
+    {
+      "company": "Vital Synapses, Dallas, TX",
+      "title": "Data Science Intern",
+      "date": "May 2023 – August 2023",
+      "bullets": [
+        "Explained the causes of processing delays for 68% of insurance claims using regression and hypothesis testing.",
+        "Showed which symptoms, diagnoses and claim factors drive processing time through 10+ Power BI dashboards.",
+        "Automated extraction, cleaning and transformation of health insurance claims data with an end-to-end ETL pipeline.",
+        "Delivered a standardized, analysis-ready claims dataset by filling missing and inconsistent fields with regression-based imputation."
+      ]
+    },
+    {
+      "company": "Pricesenz, Dallas, TX",
+      "title": "Research Analyst",
+      "date": "May 2022 – August 2022",
+      "bullets": [
+        "Led three interns in evaluating $10k+ of BI tools (Power BI, Tableau, Zapier, AWS), recommending Power BI to stakeholders and negotiating vendor discounts of nearly 30%.",
+        "Gave multiple departments shared KPI dashboards by building a CRM-to-Power BI pipeline feeding 40+ data points.",
+        "Made dashboard figures match the CRM by reconciling data mismatches with added cleaning and transformation steps."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "ValAtlas: VALORANT Analytics & Win Prediction",
+      "subtitle": "Python, scikit-learn, PostgreSQL",
+      "date": "2025 – 2026",
+      "bullets": [
+        "Predicted round outcomes every 5 seconds with a win-probability model (logistic regression, scikit-learn) trained on 11,700 in-round snapshots from 1,127 VALORANT rounds, using players alive, spike state, team economy and engineered map-control features.",
+        "Reached held-out AUC 0.82, calibrated within 5 points in every decile, by preventing data leakage with match-grouped cross-validation (GroupKFold) and choosing logistic regression over gradient-boosted trees for more trustworthy probabilities.",
+        "Proved map control adds predictive value beyond basic game state with a match-level bootstrap (log-loss gain 0.0036, 95% CI 0.0008–0.0063), fixing the feature specification in advance after a first attempt returned a null result.",
+        "Engineered map-control features from walking-distance territory using multi-source Dijkstra on each map's movement grid, including per-site control and each team's distance to the planted spike.",
+        "Estimated the game server's lag compensation from the data (about 45 ms by regression, 50 ms by parameter sweep); correcting for it raised hits landing on the target's body from 82.5% to 90.4%.",
+        "Reported only metrics reliable enough to trust, testing 5 candidate aim metrics with within- vs. between-player variance and split-half checks and keeping 2 (crosshair height at a 15:1 signal-to-noise ratio).",
+        "Validated the data against Riot's official scoreboard (614/614 kills, 613/614 deaths) and caught a sign inversion that had a headline metric reporting 7% instead of 23.9%.",
+        "Built a physics-based jump detector from 125 Hz vertical velocity that found 117,000 airborne spans, 97% confirmed by a gravity-shaped velocity signature.",
+        "Built ETL from Riot's match API and parsed replays into PostgreSQL, extending an open-source C# replay parser with a Python (NumPy, SciPy) extraction layer over 600 MB–1.3 GB of raw events, about 2 million movement updates per match.",
+        "Shipped the analysis as a Next.js, Prisma and PostgreSQL web app with colorblind-safe map heatmaps, an aim-error target board and per-round win-probability timelines, backed by 235 unit tests."
+      ]
+    },
+    {
+      "title": "StockBot: Quantitative Trading Research Platform",
+      "subtitle": "Python, scikit-learn, XGBoost, PyTorch",
+      "date": "",
+      "bullets": [
+        "Designed and ran about 140 pre-registered strategy tests across currencies, US equities, emerging markets and crypto, each with walk-forward training, realistic trading costs and an untouched holdout period.",
+        "Guarded against multiple-testing bias using the Deflated Sharpe Ratio and combinatorial purged cross-validation.",
+        "Found a cross-sectional crypto ranking signal that held on unseen 2024–2026 data, with picks beating the average coin by 53% a year (t = 4.5).",
+        "Showed how backtests mislead: survivorship bias doubled an equity strategy's apparent return, and an ML stock model's \"alpha\" turned out to be market exposure.",
+        "Built point-in-time data pipelines from SEC EDGAR (XBRL fundamentals, 10,271 annual-report texts, Form 4 insider trades), FINRA short volume, the Binance archive (659 coins, including delisted ones) and FRED, BIS, ECB and CFTC macro data.",
+        "Fixed look-ahead and survivorship traps that would have inflated results, such as spin-offs recorded as stock splits and reused crypto tickers.",
+        "Developed machine-learning ensembles (ridge, gradient boosting, neural networks) and deep sequence models (LSTM, GRU-TCN, Transformer).",
+        "Built an event-driven modeling pipeline with CUSUM sampling, triple-barrier labels and meta-labeling.",
+        "Built a forward paper-trading system that logs each decision before its outcome exists, with a live local dashboard (Python HTTP server, Chart.js, exchange APIs).",
+        "Limited downside on a live OANDA trading bot with a daily loss limit, a drawdown kill switch and a spread filter."
+      ]
+    },
+    {
+      "title": "AI Resume Tailoring Application",
+      "subtitle": "github.com/YazenzM/resume-tailor",
+      "date": "2026",
+      "bullets": [
+        "Built a Python and Streamlit application that rewrites resume bullet points against a pasted job description, with interchangeable Anthropic Claude and Google Gemini backends behind one interface.",
+        "Eliminated a class of defects where rewrites landed on the wrong role by constraining model output with a JSON schema and mapping every edit back by explicit identifiers.",
+        "Produced resumes that fill exactly one page with a Typst PDF pipeline whose automatic fitting pass measures the rendered page and adjusts body type size and content.",
+        "Reduced API cost on repeat runs by structuring the unchanging candidate profile as a cacheable prompt prefix, so only the job description is re-billed.",
+        "Prevented silent content loss from truncated model responses by repairing partial JSON and discarding incomplete objects.",
+        "Covered the result mapping, page fitting and response parsing with a test suite driving the real template and profile."
+      ]
+    },
+    {
+      "title": "Fantasy Basketball Roster Assistant",
+      "subtitle": "",
+      "date": "2026",
+      "bullets": [
+        "Built a fantasy basketball assistant that grounds roster advice in current reporting rather than static rankings, retrieving social media coverage of players through a RAG pipeline.",
+        "Integrated the Yahoo Fantasy Sports API to read live league settings, rosters and lineups so recommendations apply to the user's actual team.",
+        "Generated add, drop and lineup suggestions by combining retrieved player news with the league context pulled from the API."
+      ]
+    },
+    {
+      "title": "Brain Tumor MRI Classification",
+      "subtitle": "github.com/YazenzM/Tumor-Image-classification-with-ML-Neural-Net",
+      "date": "December 2023",
+      "bullets": [
+        "Built and compared two convolutional neural networks in TensorFlow/Keras for four-class brain tumor classification over 2,870 labelled MRI images.",
+        "Constructed the image pipeline with Keras ImageDataGenerator, and applied dropout, early stopping and model checkpointing to control overfitting.",
+        "Evaluated ReLU against LeakyReLU activations across the same architecture, measuring the effect on training and validation performance."
+      ]
+    },
+    {
+      "title": "Rice Health Policy Hackathon, Houston, TX",
+      "subtitle": "",
+      "date": "July 2023",
+      "bullets": [
+        "Co-authored an 8-page policy paper on integrating ImmTrac2 into Texas's Health Information Exchange (HIE) to improve vaccine reporting, projecting a 32% efficiency gain.",
+        "Worked with healthcare professionals and analyzed immunization data to find record-keeping bottlenecks, recommending record sharing that reduces redundant vaccinations.",
+        "Presented findings to district judges and answered their questions, competing in a cohort of 100+ participants."
+      ]
+    },
+    {
+      "title": "ASA DataFest 2023, SMU",
+      "subtitle": "",
+      "date": "March 2023",
+      "bullets": [
+        "Placed 3rd by analyzing 10GB of data across 8 datasets, uncovering trends in pro bono legal cases for the ABA Foundation.",
+        "Pinpointed location-specific problems, such as high failure rates in Mississippi, through exploratory data analysis (EDA) in R with heat maps and distribution plots.",
+        "Predicted pro bono case success with 90% accuracy from response times and urgency indicators using a multiple linear regression model on NLP-extracted features."
+      ]
+    }
+  ],
+  "additional_info": "US Citizen, Eligible to work in the US for internships and full time with no restrictions."
+}

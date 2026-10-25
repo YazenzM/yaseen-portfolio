@@ -1,5 +1,7 @@
-import { Avatar, Button, Flex, Heading, Icon, IconButton, SmartImage, Tag, Text } from '@/once-ui/components';
-import { baseURL, renderContent } from '@/app/resources';
+import fs from 'fs';
+import path from 'path';
+import { Avatar, Button, Flex, Heading, Icon, IconButton, SmartImage, SmartLink, Tag, Text } from '@/once-ui/components';
+import { baseURL, routes, renderContent } from '@/app/resources';
 import TableOfContents from '@/components/about/TableOfContents';
 import styles from '@/components/about/about.module.scss'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
@@ -21,7 +23,7 @@ export async function generateMetadata(
 			title,
 			description,
 			type: 'website',
-			url: `https://${baseURL}/${locale}/blog`,
+			url: `https://${baseURL}/${locale}/about`,
 			images: [
 				{
 					url: ogImage,
@@ -43,27 +45,40 @@ export default function About(
 ) {
     unstable_setRequestLocale(locale);
     const t = useTranslations();
-    const {person, about, social } = renderContent(t);
+    const {person, about, social, work } = renderContent(t);
+    // Only show the download button once the PDF has been added to /public
+    const resumeAvailable = about.resume.display
+        && fs.existsSync(path.join(process.cwd(), 'public', about.resume.file));
     const structure = [
-        { 
+        {
             title: about.intro.title,
             display: about.intro.display,
             items: []
         },
-        { 
+        {
+            title: about.studies.title,
+            display: about.studies.display,
+            items: []
+        },
+        {
+            title: about.technical.title,
+            display: about.technical.display,
+            items: []
+        },
+        {
             title: about.work.title,
             display: about.work.display,
             items: about.work.experiences.map(experience => experience.company)
         },
-        { 
-            title: about.studies.title,
-            display: about.studies.display,
-            items: about.studies.institutions.map(institution => institution.name)
+        {
+            title: about.projects.title,
+            display: about.projects.display,
+            items: []
         },
-        { 
-            title: about.technical.title,
-            display: about.technical.display,
-            items: about.technical.skills.map(skill => skill.title)
+        {
+            title: about.additional.title,
+            display: about.additional.display,
+            items: []
         },
     ]
     return (
@@ -81,7 +96,7 @@ export default function About(
                         jobTitle: person.role,
                         description: about.intro.description,
                         url: `https://${baseURL}/about`,
-                        image: `${baseURL}/images/${person.avatar}`,
+                        image: `https://${baseURL}${person.avatar}`,
                         sameAs: social
                             .filter((item) => item.link && !item.link.startsWith('mailto:')) // Filter out empty links and email links
                             .map((item) => item.link),
@@ -119,7 +134,7 @@ export default function About(
                             <Icon
                                 onBackground="accent-weak"
                                 name="globe"/>
-                            {"America/Dallas"}
+                            {person.city}
                         </Flex>
                         { person.languages.length > 0 && (
                             <Flex
@@ -182,10 +197,20 @@ export default function About(
                             onBackground="neutral-weak">
                             {person.role}
                         </Text>
-                        {social.length > 0 && (
+                        {(resumeAvailable || social.length > 0) && (
                             <Flex
                                 className={styles.blockAlign}
                                 paddingTop="20" paddingBottom="8" gap="8" wrap>
+                                {resumeAvailable && (
+                                    <Button
+                                        href={about.resume.file}
+                                        target="_blank"
+                                        rel="noopener"
+                                        prefixIcon="download"
+                                        label={about.resume.label}
+                                        size="s"
+                                        variant="primary"/>
+                                )}
                                 {social.map((item) => (
                                     item.link && (
                                         <Button
@@ -210,6 +235,104 @@ export default function About(
                         </Flex>
                     )}
 
+                    { about.studies.display && (
+                        <>
+                            <Heading
+                                as="h2"
+                                id={about.studies.title}
+                                variant="display-strong-s"
+                                marginBottom="m">
+                                {about.studies.title}
+                            </Heading>
+                            <Flex
+                                direction="column"
+                                fillWidth gap="l" marginBottom="40">
+                                {about.studies.institutions.map((institution, index) => (
+                                    <Flex
+                                        key={`${institution.name}-${index}`}
+                                        fillWidth gap="4"
+                                        direction="column">
+                                        <Flex
+                                            fillWidth gap="4"
+                                            mobileDirection="column"
+                                            justifyContent="space-between"
+                                            alignItems="baseline"
+                                            marginBottom="4">
+                                            <Text
+                                                id={institution.name}
+                                                variant="heading-strong-l">
+                                                {institution.name}
+                                            </Text>
+                                            <Text
+                                                variant="heading-default-xs"
+                                                onBackground="neutral-weak">
+                                                {institution.timeframe}
+                                            </Text>
+                                        </Flex>
+
+                                        <Text
+                                            variant="heading-default-xs"
+                                            onBackground="neutral-weak">
+                                            {institution.description}
+                                        </Text>
+                                    </Flex>
+                                ))}
+                            </Flex>
+                        </>
+                    )}
+
+                    { about.technical.display && (
+                        <>
+                            <Heading
+                                as="h2"
+                                id={about.technical.title}
+                                variant="display-strong-s" marginBottom="40">
+                                {about.technical.title}
+                            </Heading>
+                            <Flex
+                                direction="column"
+                                fillWidth gap="l" marginBottom="40">
+                                {about.technical.skills.map((skill, index) => (
+                                    <Flex
+                                        key={`${skill}-${index}`}
+                                        fillWidth gap="4"
+                                        direction="column">
+                                        <Text
+                                            variant="heading-strong-l">
+                                            {skill.title}
+                                        </Text>
+                                        <Text
+                                            variant="body-default-m"
+                                            onBackground="neutral-weak">
+                                            {skill.description}
+                                        </Text>
+                                        {skill.images.length > 0 && (
+                                            <Flex
+                                                fillWidth paddingTop="m" gap="12"
+                                                wrap>
+                                                {skill.images.map((image, index) => (
+                                                    <Flex
+                                                        key={index}
+                                                        border="neutral-medium"
+                                                        borderStyle="solid-1"
+                                                        radius="m"
+                                                        minWidth={image.width} height={image.height}>
+                                                        <SmartImage
+                                                            enlarge
+                                                            radius="m"
+                                                            sizes={image.width.toString()}
+                                                            alt={image.alt}
+                                                            src={image.src}/>
+                                                    </Flex>
+                                                ))}
+                                            </Flex>
+                                        )}
+                                    </Flex>
+                                ))}
+                            </Flex>
+                        </>
+                    )}
+
                     { about.work.display && (
                         <>
                             <Heading
@@ -228,9 +351,10 @@ export default function About(
                                         fillWidth
                                         direction="column">
                                         <Flex
-                                            fillWidth
+                                            fillWidth gap="4"
+                                            mobileDirection="column"
                                             justifyContent="space-between"
-                                            alignItems="flex-end"
+                                            alignItems="baseline"
                                             marginBottom="4">
                                             <Text
                                                 id={experience.company}
@@ -288,100 +412,95 @@ export default function About(
                         </>
                     )}
 
-                    { about.studies.display && (
+                    { about.projects.display && (
                         <>
                             <Heading
                                 as="h2"
-                                id={about.studies.title}
+                                id={about.projects.title}
                                 variant="display-strong-s"
                                 marginBottom="m">
-                                {about.studies.title}
+                                {about.projects.title}
                             </Heading>
                             <Flex
                                 direction="column"
                                 fillWidth gap="l" marginBottom="40">
-                                {about.studies.institutions.map((institution, index) => (
+                                {about.projects.items.map((project, index) => {
+                                    // Link to the full project page when one exists for this title
+                                    const projectPage = routes['/work']
+                                        && work.projects.find((item) => item.title === project.title);
+                                    return (
                                     <Flex
-                                        key={`${institution.name}-${index}`}
-                                        fillWidth gap="4"
+                                        key={`${project.title}-${index}`}
+                                        fillWidth
                                         direction="column">
                                         <Flex
-                                            fillWidth
+                                            fillWidth gap="4"
+                                            mobileDirection="column"
                                             justifyContent="space-between"
-                                            alignItems="flex-end"
+                                            alignItems="baseline"
                                             marginBottom="4">
                                             <Text
-                                                id={institution.name}
+                                                id={project.title}
                                                 variant="heading-strong-l">
-                                                {institution.name}
+                                                {project.title}
                                             </Text>
-                                            <Text
-                                                variant="heading-default-xs"
-                                                onBackground="neutral-weak">
-                                                {institution.timeframe}
-                                            </Text>
+                                            {project.timeframe && (
+                                                <Text
+                                                    variant="heading-default-xs"
+                                                    onBackground="neutral-weak">
+                                                    {project.timeframe}
+                                                </Text>
+                                            )}
                                         </Flex>
-                                        
                                         <Text
-                                            variant="heading-default-xs"
-                                            onBackground="neutral-weak">
-                                            {institution.description}
+                                            variant="body-default-s"
+                                            onBackground="brand-weak"
+                                            marginBottom="m">
+                                            {project.stack}
                                         </Text>
+                                        <Flex
+                                            as="ul"
+                                            direction="column" gap="16">
+                                            {project.bullets.map((bullet: string, index: number) => (
+                                                <Text
+                                                    as="li"
+                                                    variant="body-default-m"
+                                                    key={`${project.title}-${index}`}>
+                                                    {bullet}
+                                                </Text>
+                                            ))}
+                                        </Flex>
+                                        {projectPage && (
+                                            <SmartLink
+                                                suffixIcon="chevronRight"
+                                                style={{margin: '0', marginTop: 'var(--static-space-16)', width: 'fit-content'}}
+                                                href={`/${locale}/work/${projectPage.slug}`}>
+                                                <Text
+                                                    variant="body-default-s">
+                                                    View full project
+                                                </Text>
+                                            </SmartLink>
+                                        )}
                                     </Flex>
-                                ))}
+                                    );
+                                })}
                             </Flex>
                         </>
                     )}
 
-                    { about.technical.display && (
+                    { about.additional.display && (
                         <>
                             <Heading
                                 as="h2"
-                                id={about.technical.title}
-                                variant="display-strong-s" marginBottom="40">
-                                {about.technical.title}
+                                id={about.additional.title}
+                                variant="display-strong-s"
+                                marginBottom="m">
+                                {about.additional.title}
                             </Heading>
-                            <Flex
-                                direction="column"
-                                fillWidth gap="l">
-                                {about.technical.skills.map((skill, index) => (
-                                    <Flex
-                                        key={`${skill}-${index}`}
-                                        fillWidth gap="4"
-                                        direction="column">
-                                        <Text
-                                            variant="heading-strong-l">
-                                            {skill.title}
-                                        </Text>
-                                        <Text
-                                            variant="body-default-m"
-                                            onBackground="neutral-weak">
-                                            {skill.description}
-                                        </Text>
-                                        {skill.images.length > 0 && (
-                                            <Flex
-                                                fillWidth paddingTop="m" gap="12"
-                                                wrap>
-                                                {skill.images.map((image, index) => (
-                                                    <Flex
-                                                        key={index}
-                                                        border="neutral-medium"
-                                                        borderStyle="solid-1"
-                                                        radius="m"
-                                                        minWidth={image.width} height={image.height}>
-                                                        <SmartImage
-                                                            enlarge
-                                                            radius="m"
-                                                            sizes={image.width.toString()}
-                                                            alt={image.alt}
-                                                            src={image.src}/>
-                                                    </Flex>
-                                                ))}
-                                            </Flex>
-                                        )}
-                                    </Flex>
-                                ))}
-                            </Flex>
+                            <Text
+                                variant="body-default-m">
+                                {about.additional.description}
+                            </Text>
                         </>
                     )}
                 </Flex>

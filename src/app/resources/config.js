@@ -1,4 +1,4 @@
-const baseURL = 'demo.app'
+const baseURL = 'yaseen-portfolio-tau.vercel.app'
 
 // Enable localization
 const i18n = false;
@@ -12,15 +12,14 @@ const i18nOptions = {
 const routes = {
     '/':        false,
     '/about':   true,
-    '/work':    false,
+    '/work':    true,
     '/blog':    false,
     '/gallery': false,
 }
 
-// Enable password protection on selected routes
+// Enable password protection on selected routes, e.g. '/work/valatlas': true
 // Set password in pages/api/authenticate.ts
 const protectedRoutes = {
-    '/work/automate-design-handovers-with-a-figma-to-code-pipeline': true
 }
 
 const effects = {

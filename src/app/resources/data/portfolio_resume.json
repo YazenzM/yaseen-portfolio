@@ -1,0 +1,122 @@
+{
+  "basics": {
+    "name": "Yaseen Mohammed",
+    "title": "Data Scientist",
+    "location": "Plano, TX",
+    "contact": "Yaseenam3@gmail.com | linkedin.com/in/yaseenam | github.com/YazenzM"
+  },
+  "education": [
+    {
+      "school": "The University of Texas at Dallas",
+      "degree": "Master of Science, Business Analytics and Artificial Intelligence",
+      "date": "Expected December 2026"
+    },
+    {
+      "school": "The University of Texas at Dallas",
+      "degree": "Bachelor of Science, Data Science",
+      "date": "December 2023"
+    }
+  ],
+  "skills": [
+    {
+      "category": "Certifications",
+      "details": "AWS Certified Machine Learning, Microsoft Azure Data Scientist Associate"
+    },
+    {
+      "category": "Programming",
+      "details": "SQL, Python, R, Scala, Java, C++, C#, JavaScript, TypeScript"
+    },
+    {
+      "category": "Machine Learning",
+      "details": "Scikit-learn, XGBoost, PyTorch, TensorFlow/Keras, Feature Engineering, Forecasting"
+    },
+    {
+      "category": "AI & LLM",
+      "details": "RAG, LLM Integration, Prompt Engineering, NLP, Text-to-SQL"
+    },
+    {
+      "category": "Statistics",
+      "details": "Hypothesis Testing, Bootstrap, Cross-Validation, Backtesting, Calibration, Signal Processing"
+    },
+    {
+      "category": "Analytics & BI",
+      "details": "PowerBI, Tableau, MS Excel, RStudio, pandas, NumPy, SciPy"
+    },
+    {
+      "category": "Data Engineering",
+      "details": "Spark, PySpark, Snowflake, BigQuery, PostgreSQL, MySQL, MongoDB, REST APIs, Azure, AWS"
+    }
+  ],
+  "experience": [
+    {
+      "company": "Zinzu, Redmond, WA",
+      "title": "Data Scientist",
+      "date": "March 2024 – Present",
+      "bullets": [
+        "Saved clients time by letting them query their e-commerce data in plain English instead of menus or SQL, through an LLM Text-to-SQL pipeline (GPT API, prompt engineering) that generates executable SQL with 94% accuracy.",
+        "Process 100 GB of GA4 events per day in BigQuery with distributed PySpark ETL pipelines, turning raw event streams into analysis-ready user-journey sequences for clickstream analytics.",
+        "Helped clients find more prospective customers with a product feature that scores each visitor's conversion probability, using a machine learning model trained on user-journey data to flag high-intent visitors.",
+        "Built and maintain the Azure data layer (Azure SQL, Cosmos DB, Blob Storage) that holds 72% of the company's operational data.",
+        "Informed the launch of an agriculture app for farms in India with a 21-page geospatial analytics report to the CEO on use cases, implementation paths and competitors."
+      ]
+    },
+    {
+      "company": "Standard Aero, Dallas, TX",
+      "title": "Business Analyst Intern",
+      "date": "February – August 2025 · February – August 2026",
+      "bullets": [
+        "Gave a ~600-person business unit self-serve visibility into employee performance and department KPIs by gathering requirements from 4 departments and building Power BI dashboards.",
+        "Unified Snowflake and Oracle data for company reporting by designing SQL pipelines that transform source data into analysis-ready tables.",
+        "Traced budget variances and cost overruns to their root causes using statistical forecasts of monthly KPIs and spending built from historical data and the known client pipeline."
+      ]
+    },
+    {
+      "company": "Autix Automotive, Dallas, TX",
+      "title": "Data Scientist Intern",
+      "date": "August 2023 – December 2023",
+      "bullets": [
+        "Saved $80k in external software costs and raised the dataset's predictive power by 27% by using the GPT API to extract structured features from unstructured car descriptions.",
+        "Helped customers price cars against the market with less research time by improving prediction accuracy 62% with segment-specific models, luxury to economy, built in Scikit-learn and XGBoost with ensemble methods."
+      ]
+    },
+    {
+      "company": "Vital Synapses, Dallas, TX",
+      "title": "Data Science Intern",
+      "date": "May 2023 – August 2023",
+      "bullets": [
+        "Explained the causes of processing delays for 68% of insurance claims using regression and hypothesis testing.",
+        "Showed which symptoms, diagnoses and claim factors drive processing time through 10+ Power BI dashboards."
+      ]
+    },
+    {
+      "company": "Pricesenz, Dallas, TX",
+      "title": "Research Analyst",
+      "date": "May 2022 – August 2022",
+      "bullets": [
+        "Led three interns in evaluating $10k+ of BI tools (Power BI, Tableau, Zapier, AWS), recommending Power BI to stakeholders and negotiating vendor discounts of nearly 30%."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "ValAtlas: VALORANT Analytics & Win Prediction",
+      "subtitle": "Python, scikit-learn, PostgreSQL",
+      "date": "2025 – 2026",
+      "bullets": [
+        "Predicted round outcomes every 5 seconds with a win-probability model (logistic regression, scikit-learn) trained on 11,700 in-round snapshots from 1,127 VALORANT rounds, using players alive, spike state, team economy and engineered map-control features.",
+        "Reached held-out AUC 0.82, calibrated within 5 points in every decile, by preventing data leakage with match-grouped cross-validation (GroupKFold) and choosing logistic regression over gradient-boosted trees for more trustworthy probabilities.",
+        "Shipped the analysis as a Next.js, Prisma and PostgreSQL web app with colorblind-safe map heatmaps, an aim-error target board and per-round win-probability timelines, backed by 235 unit tests."
+      ]
+    },
+    {
+      "title": "StockBot: Quantitative Trading Research Platform",
+      "subtitle": "Python, scikit-learn, XGBoost, PyTorch",
+      "date": "",
+      "bullets": [
+        "Designed and ran about 140 pre-registered strategy tests across currencies, US equities, emerging markets and crypto, each with walk-forward training, realistic trading costs and an untouched holdout period.",
+        "Found a cross-sectional crypto ranking signal that held on unseen 2024–2026 data, with picks beating the average coin by 53% a year (t = 4.5)."
+      ]
+    }
+  ],
+  "additional_info": "US Citizen, Eligible to work in the US for internships and full time with no restrictions."
+}
