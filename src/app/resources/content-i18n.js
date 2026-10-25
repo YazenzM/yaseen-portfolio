@@ -10,6 +10,7 @@ const createI18nContent = (t) => {
         role:      t("person.role"),
         avatar:    '/images/avatar.jpg',
         location:  'Asia/Jakarta',        // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
+        city:      'Jakarta',
         languages: ['English', 'Bahasa']  // optional: Leave the array empty if you don't want to display languages
     }
 
@@ -66,6 +67,12 @@ const createI18nContent = (t) => {
         calendar: {
             display: true,
             link: 'https://cal.com'
+        },
+        // Resume-only sections from content.js; hidden in the localized template
+        resume: {
+            display: false,
+            label: '',
+            file: ''
         },
         intro: {
             display: true,
@@ -150,6 +157,16 @@ const createI18nContent = (t) => {
                     ]
                 }
             ]
+        },
+        projects: {
+            display: false,
+            title: '',
+            items: []
+        },
+        additional: {
+            display: false,
+            title: '',
+            description: ''
         }
     }
 
@@ -164,9 +181,14 @@ const createI18nContent = (t) => {
     const work = {
         label: t("work.label"),
         title: t("work.title"),
-        description: t("work.description", {name: person.name})
-        // Create new project pages by adding a new .mdx file to app/blog/posts
-        // All projects will be listed on the /home and /work routes
+        description: t("work.description", {name: person.name}),
+        // Project pages are built from data/master_profile.json in content.js; none in the localized template
+        projects: [],
+        competitions: {
+            display: false,
+            title: '',
+            items: []
+        }
     }
 
     const gallery = {

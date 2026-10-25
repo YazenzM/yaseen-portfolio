@@ -1,154 +1,92 @@
-"use client";
-
-import { AvatarGroup, Flex, Heading, RevealFx, SmartImage, SmartLink, Text } from "@/once-ui/components";
-import { useEffect, useState } from "react";
-import { useTranslations } from 'next-intl';
+import { Button, Flex, Heading, Tag, Text } from "@/once-ui/components";
 
 interface ProjectCardProps {
     href: string;
-    images: string[];
     title: string;
-    content: string;
-    description: string;
-    avatars: { src: string }[];
+    date: string;
+    stack: string;
+    summary: string;
+    github: string;
+    demoUrl: string;
+    featured?: boolean;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
     href,
-    images = [],
     title,
-    content,
-    description,
-    avatars
+    date,
+    stack,
+    summary,
+    github,
+    demoUrl,
+    featured = false
 }) => {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [isTransitioning, setIsTransitioning] = useState(false);
-
-    const t = useTranslations();
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsTransitioning(true);
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    const handleImageClick = () => {
-        if(images.length > 1) {
-            setIsTransitioning(false);
-            setTimeout(() => {
-                const nextIndex = (activeIndex + 1) % images.length;
-                setActiveIndex(nextIndex);
-                setTimeout(() => {
-                    setIsTransitioning(true);
-                }, 630);
-            }, 630);
-        }
-    };
-    
-    const handleControlClick = (index: number) => {
-        if (index !== activeIndex) {
-            setIsTransitioning(true);
-            setTimeout(() => {
-                setActiveIndex(index);
-                setTimeout(() => {
-                    setIsTransitioning(false);
-                }, 630);
-            }, 630);
-        }
-    };
+    const meta = [date, stack].filter(Boolean).join(' · ');
 
     return (
         <Flex
-            fillWidth gap="m"
+            fillWidth gap="m" padding="l"
+            radius="l"
+            background="surface"
+            border={featured ? 'brand-medium' : 'neutral-medium'}
+            borderStyle="solid-1"
             direction="column">
-            <Flex onClick={handleImageClick}>
-            <RevealFx
-                    style={{width: '100%'}}
-                    delay={0.4}
-                    trigger={isTransitioning}
-                    speed="fast">
-                    <SmartImage
-                        tabIndex={0}
-                        radius="l"
-                        alt={title}
-                        aspectRatio="16 / 9"
-                        src={images[activeIndex]}
-                        style={{
-                            border: '1px solid var(--neutral-alpha-weak)',
-                            ...(images.length > 1 && {
-                                cursor: 'pointer',
-                            }),
-                        }}/>
-                </RevealFx>
-            </Flex>
-            {images.length > 1 && (
-                <Flex
-                    gap="4" paddingX="s"
-                    fillWidth maxWidth={32}
-                    justifyContent="center">
-                    {images.map((_, index) => (
-                        <Flex
-                            key={index}
-                            onClick={() => handleControlClick(index)}
-                            style={{
-                                background: activeIndex === index 
-                                    ? 'var(--neutral-on-background-strong)' 
-                                    : 'var(--neutral-alpha-medium)',
-                                cursor: 'pointer',
-                                transition: 'background 0.3s ease',
-                            }}
-                            fillWidth
-                            height="2">
-                        </Flex>
-                    ))}
+            {featured && (
+                <Flex>
+                    <Tag
+                        variant="brand"
+                        size="m"
+                        label="Featured project"/>
                 </Flex>
             )}
             <Flex
-                mobileDirection="column"
-                fillWidth paddingX="l" paddingTop="xs" paddingBottom="m" gap="l">
-                {title && (
-                    <Flex
-                        flex={5}>
-                        <Heading
-                            as="h2"
-                            wrap="balance"
-                            variant="display-strong-xs">
-                            {title}
-                        </Heading>
-                    </Flex>
+                direction="column" gap="8">
+                <Heading
+                    as="h2"
+                    wrap="balance"
+                    variant={featured ? 'display-strong-xs' : 'heading-strong-l'}>
+                    {title}
+                </Heading>
+                {meta && (
+                    <Text
+                        variant="body-default-s"
+                        onBackground="neutral-weak">
+                        {meta}
+                    </Text>
                 )}
-                {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
-                    <Flex
-                        flex={7} direction="column"
-                        gap="s">
-                        {avatars?.length > 0 && (
-                            <AvatarGroup
-                                avatars={avatars}
-                                size="m"
-                                reverseOrder/>
-                        )}
-                        {description?.trim() && (
-                            <Text
-                                wrap="balance"
-                                variant="body-default-s"
-                                onBackground="neutral-weak">
-                                {description}
-                            </Text>
-                        )}
-                        {content?.trim() && (
-                            <SmartLink
-                                suffixIcon="chevronRight"
-                                style={{margin: '0', width: 'fit-content'}}
-                                href={href}>
-                                    <Text
-                                        variant="body-default-s">
-                                       {t("projectCard.label")}
-                                    </Text>
-                            </SmartLink>
-                        )}
-                    </Flex>
+            </Flex>
+            {summary && (
+                <Text
+                    wrap="balance"
+                    variant={featured ? 'body-default-l' : 'body-default-m'}
+                    onBackground="neutral-medium">
+                    {summary}
+                </Text>
+            )}
+            <Flex
+                gap="8" wrap
+                style={{ marginTop: 'auto' }}>
+                <Button
+                    href={href}
+                    variant={featured ? 'primary' : 'secondary'}
+                    size="s"
+                    suffixIcon="chevronRight"
+                    label="View project"/>
+                {demoUrl && (
+                    <Button
+                        href={demoUrl}
+                        variant="secondary"
+                        size="s"
+                        suffixIcon="arrowUpRight"
+                        label="Live demo"/>
+                )}
+                {github && (
+                    <Button
+                        href={github}
+                        variant="tertiary"
+                        size="s"
+                        prefixIcon="github"
+                        label="GitHub"/>
                 )}
             </Flex>
         </Flex>

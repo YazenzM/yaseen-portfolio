@@ -1,5 +1,6 @@
-import { getPosts } from '@/app/utils';
-import { Flex } from '@/once-ui/components';
+import { Flex, Grid } from '@/once-ui/components';
+import { renderContent } from '@/app/resources';
+import { useTranslations } from 'next-intl';
 
 import { ProjectCard } from '@/components';
 
@@ -9,30 +10,41 @@ interface ProjectsProps {
 }
 
 export function Projects({ range, locale }: ProjectsProps) {
-    let allProjects = getPosts(['src', 'app', '[locale]', 'work', 'projects', locale]);
-
-    const sortedProjects = allProjects.sort((a, b) => {
-        return new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime();
-    });
+    const t = useTranslations();
+    const { work } = renderContent(t);
 
     const displayedProjects = range
-        ? sortedProjects.slice(range[0] - 1, range[1] ?? sortedProjects.length)
-        : sortedProjects;
+        ? work.projects.slice(range[0] - 1, range[1] ?? work.projects.length)
+        : work.projects;
+
+    const featuredProjects = displayedProjects.filter((project) => project.featured);
+    const otherProjects = displayedProjects.filter((project) => !project.featured);
+
+    const renderCard = (project: typeof displayedProjects[number]) => (
+        <ProjectCard
+            key={project.slug}
+            href={`/${locale}/work/${project.slug}`}
+            title={project.title}
+            date={project.date}
+            stack={project.stack}
+            summary={project.summary}
+            github={project.github}
+            demoUrl={project.demoUrl}
+            featured={project.featured}/>
+    );
 
     return (
         <Flex
             fillWidth gap="l" marginBottom="40" paddingX="l"
             direction="column">
-            {displayedProjects.map((post) => (
-                <ProjectCard
-                    key={post.slug}
-                    href={`work/${post.slug}`}
-                    images={post.metadata.images}
-                    title={post.metadata.title}
-                    description={post.metadata.summary}
-                    content={post.content}
-                    avatars={post.metadata.team?.map((member) => ({ src: member.avatar })) || []}/>
-            ))}
+            {featuredProjects.map(renderCard)}
+            {otherProjects.length > 0 && (
+                <Grid
+                    fillWidth gap="l"
+                    columns="repeat(2, 1fr)" mobileColumns="1col">
+                    {otherProjects.map(renderCard)}
+                </Grid>
+            )}
         </Flex>
     );
 }
