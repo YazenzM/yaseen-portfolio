@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { Button, Flex, Heading, Text } from '@/once-ui/components'
+import { CarouselImage, ImageCarousel } from '@/components/ImageCarousel'
 import { baseURL, renderContent } from '@/app/resources';
 import { work as workContent } from '@/app/resources/content';
 import { routing } from '@/i18n/routing';
@@ -74,6 +75,7 @@ export default async function Project({ params }: WorkParams) {
 	}
 
 	const meta = [project.date, project.stack].filter(Boolean).join(' · ');
+	const images: CarouselImage[] = project.images;
 
 	return (
 		<Flex as="section"
@@ -148,6 +150,16 @@ export default async function Project({ params }: WorkParams) {
 					</Flex>
 				)}
 			</Flex>
+			{images.length > 0 && (
+				<Flex
+					fillWidth maxWidth="s">
+					<ImageCarousel
+						images={images}
+						label={`${project.title} images`}
+						sizes="(max-width: 768px) 100vw, 768px"
+						captions/>
+				</Flex>
+			)}
 			<Flex
 				as="article"
 				maxWidth="xs" fillWidth

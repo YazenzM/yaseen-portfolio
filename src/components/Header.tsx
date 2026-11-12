@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
 import { Flex, ToggleButton } from "@/once-ui/components"
+import { ThemeToggle } from '@/components/ThemeToggle'
 import styles from '@/components/Header.module.scss'
 
 import { routes, display } from '@/app/resources'
@@ -135,6 +136,10 @@ export const Header = () => {
                             <Flex paddingX="2" hide="s">{gallery.label}</Flex>
                         </ToggleButton>
                     )}
+                    <Flex
+                        width="1" marginY="4"
+                        alpha="neutral-medium"/>
+                    <ThemeToggle/>
                 </Flex>
             </Flex>
             <Flex

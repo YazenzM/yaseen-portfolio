@@ -1,0 +1,32 @@
+.content {
+    width: 100%;
+    transition: max-height 0.6s ease, filter 0.4s ease;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+// A blurred, fading peek at the next row of projects
+.collapsed {
+    max-height: 16rem;
+    overflow: hidden;
+    filter: blur(5px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+    pointer-events: none;
+    user-select: none;
+}
+
+// Pulls the button up onto the faded edge of the preview
+.button {
+    position: relative;
+    z-index: 1;
+    margin-top: calc(-1 * var(--static-space-64));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .content {
+        transition: none;
+    }
+}

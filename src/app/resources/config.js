@@ -29,15 +29,28 @@ const effects = {
 }
 
 const style = {
-    theme:       'dark',         // dark | light
-    neutral:     'slate',         // sand | gray | slate
-    brand:       'blue',         // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
-    accent:      'red',       // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
+    theme:       'system',       // dark | light | system (follows the visitor's device setting)
     solid:       'contrast',     // color | contrast
     solidStyle:  'flat',         // flat | plastic
     border:      'playful',      // rounded | playful | conservative
     surface:     'translucent',  // filled | translucent
     transition:  'all'           // all | micro | macro
+}
+
+// Colors for each theme; the theme button in the header switches between them
+// neutral:       sand | gray | slate
+// brand, accent: blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
+const palettes = {
+    dark: {
+        neutral: 'slate',
+        brand:   'blue',
+        accent:  'red',
+    },
+    light: {
+        neutral: 'slate',
+        brand:   'blue',
+        accent:  'blue',
+    },
 }
 
 const display = {
@@ -54,4 +67,4 @@ const mailchimp = {
     }
 }
 
-export { routes, protectedRoutes, effects, style, display, mailchimp, baseURL, i18n, i18nOptions };
+export { routes, protectedRoutes, effects, style, palettes, display, mailchimp, baseURL, i18n, i18nOptions };

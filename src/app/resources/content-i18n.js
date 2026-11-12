@@ -183,6 +183,7 @@ const createI18nContent = (t) => {
         title: t("work.title"),
         description: t("work.description", {name: person.name}),
         // Project pages are built from data/master_profile.json in content.js; none in the localized template
+        visibleProjects: undefined,
         projects: [],
         competitions: {
             display: false,

@@ -1,0 +1,10 @@
+// Featured card: the carousel sits to the right of the text, and above it on phones
+.featuredMedia {
+    min-width: 0;
+}
+
+@media (--s) {
+    .featuredMedia {
+        order: -1;
+    }
+}

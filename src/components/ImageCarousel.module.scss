@@ -1,0 +1,92 @@
+.frame {
+    position: relative;
+    width: 100%;
+}
+
+// Native horizontal scrolling with snap points: swipe on touch screens and trackpads,
+// arrow buttons and dots everywhere else
+.track {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    border-radius: var(--radius-l);
+    border: 1px solid var(--neutral-border-medium);
+    // The screenshots and charts all have light backgrounds, so white letterboxing blends in on both themes
+    background: #ffffff;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--brand-on-background-medium);
+        outline-offset: 2px;
+    }
+}
+
+.slide {
+    position: relative;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+.link {
+    position: absolute;
+    inset: 0;
+    display: block;
+}
+
+.image {
+    object-fit: contain;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.prev {
+    left: var(--static-space-8);
+}
+
+.next {
+    right: var(--static-space-8);
+}
+
+// Each dot is a 20px target with the visible dot drawn inside it
+.dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+
+    &::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        background: var(--neutral-alpha-strong);
+        transition: width 0.2s ease, background 0.2s ease;
+    }
+
+    &[aria-current='true']::before {
+        width: 18px;
+        background: var(--brand-on-background-medium);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--brand-on-background-medium);
+        border-radius: 4px;
+    }
+}

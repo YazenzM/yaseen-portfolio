@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import { Flex, Background } from '@/once-ui/components'
 import { Footer, Header, RouteGuard } from "@/components";
-import { baseURL, effects, style } from '@/app/resources'
+import { baseURL, effects, style, palettes } from '@/app/resources'
 
 import { Inter } from 'next/font/google'
 import { Source_Code_Pro } from 'next/font/google';
@@ -77,6 +77,25 @@ const code = Source_Code_Pro({
 	display: 'swap',
 });
 
+// The server HTML uses this theme; themeScript then applies the visitor's saved
+// choice or device setting before the first paint
+const defaultTheme = style.theme === 'light' ? 'light' : 'dark';
+
+const themeScript = `(function () {
+	var saved = null;
+	try { saved = localStorage.getItem('theme'); } catch (e) {}
+	var theme = saved === 'light' || saved === 'dark' ? saved : ${JSON.stringify(style.theme)};
+	if (theme !== 'light' && theme !== 'dark') {
+		theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+	}
+	var palette = ${JSON.stringify(palettes)}[theme];
+	var root = document.documentElement;
+	root.setAttribute('data-theme', theme);
+	root.setAttribute('data-neutral', palette.neutral);
+	root.setAttribute('data-brand', palette.brand);
+	root.setAttribute('data-accent', palette.accent);
+})();`;
+
 interface RootLayoutProps {
 	children: React.ReactNode;
 	params: Promise<{locale: string}>;
@@ -99,10 +118,11 @@ export default async function RootLayout({
 		<NextIntlClientProvider messages={messages}>
 			<Flex
 				as="html" lang="en"
+				suppressHydrationWarning
 				background="page"
-				data-neutral={style.neutral} data-brand={style.brand} data-accent={style.accent}
+				data-neutral={palettes[defaultTheme].neutral} data-brand={palettes[defaultTheme].brand} data-accent={palettes[defaultTheme].accent}
 				data-solid={style.solid} data-solid-style={style.solidStyle}
-				data-theme={style.theme}
+				data-theme={defaultTheme}
 				data-border={style.border}
 				data-surface={style.surface}
 				data-transition={style.transition}
@@ -115,6 +135,7 @@ export default async function RootLayout({
 					as="body"
 					fillWidth margin="0" padding="0"
 					direction="column">
+					<script dangerouslySetInnerHTML={{ __html: themeScript }}/>
 					<Background
 						gradient={effects.gradient}
 						dots={effects.dots}

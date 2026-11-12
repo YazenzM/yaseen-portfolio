@@ -34,3 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# personal files kept in the project folder (resumes, notes); /public is not affected
+/*.pdf
+/claude_code_brief.md
+/tailor_prompt.md

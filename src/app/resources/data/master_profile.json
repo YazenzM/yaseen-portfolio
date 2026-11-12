@@ -131,6 +131,68 @@
       ]
     },
     {
+      "title": "DefaultWatch: Mortgage Default Model with Reason Codes and Monitoring",
+      "subtitle": "Python, scikit-learn, LightGBM, SHAP, MLflow, FastAPI, Streamlit",
+      "date": "2026",
+      "bullets": [
+        "Built a model that predicts which new mortgages go 90+ days delinquent within 24 months of first payment on Freddie Mac Single-Family Loan-Level sample data (50,000 loans per vintage), trained on 2014–2016 (147,616 loans), tested out-of-time on 2017 and stress-tested on 2019.",
+        "Kept a logistic-regression scorecard as champion (out-of-time AUC 0.775, calibration error by decile 0.26%) after monotone gradient boosting gained only 0.002 AUC, below the 0.005 a less transparent model needed to replace it.",
+        "Gave every declined applicant up to four specific, plain-language reasons from the model's own attribution, worded with their actual values for Regulation B and CFPB Circular 2023-03, with a check confirming that fixing the #1 reason lowers the predicted default.",
+        "Constrained credit score, DTI, LTV, CLTV and term to move risk only in their known directions so a reason never contradicts itself, and excluded geography and other proxies for protected groups on purpose.",
+        "Separated COVID relief from real default in the 2019 stress test: 4.59% of loans reached 90+ days late, but 93.5% of those cases were relief, leaving a real default rate of 0.30% against 0.49% predicted.",
+        "Traced the 2017 calibration gap to hurricane relief: observed ÷ predicted fell from 1.43 to 0.91 after excluding relief from Harvey, Irma and Maria.",
+        "Monitored each new vintage with PSI on the score and top features, catching loans with DTI above 45% growing from 5% of 2014 originations to 26% of 2023's, and flagged the 2022–2023 vintages for recalibration as they default at about twice the predicted rate.",
+        "Tracked and registered the champion with MLflow, wrote a FastAPI scoring service with a Dockerfile, and shipped a six-tab Streamlit dashboard, a two-page model document and 22 automated tests."
+      ]
+    },
+    {
+      "title": "LiftLab: Email Campaign A/B Test & Uplift Targeting",
+      "subtitle": "Python, SciPy, scikit-uplift, causalml, Streamlit",
+      "date": "2026",
+      "bullets": [
+        "Took a randomized email test of 64,000 customers (Hillstrom MineThatData: Mens email, Womens email or no email) from readout to a cost-aware send rule, then reran the method on 13.98M users from Criteo Uplift.",
+        "Checked validity before reading results (sample-ratio χ² p = 0.90, largest covariate imbalance |SMD| = 0.014), then measured visit lift of +72% (Mens) and +43% (Womens) and conversion lift of +119% and +54%, using Holm-adjusted p-values and Bonferroni bootstrap intervals (10,000 resamples per arm) for two emails against one control.",
+        "Pre-registered four segment cuts, the test, the primary outcome and the multiple-testing family in git before breaking down any outcome by arm; no cut survived Holm correction, so the strongest secondary signal was reported as exploratory, not as a finding.",
+        "Modeled individual uplift with 5-fold cross-fitted T-learner and X-learner (causalml), so every customer was scored by a model that never saw them, and judged targeting with Qini curves against a 1,000-permutation random null.",
+        "Found real, well-calibrated uplift on the Womens email (T-learner Qini 0.096 vs. 0.057 at the random 95th percentile, p = 0.001) but only noise on the Mens email (Qini 0.003, no better than random).",
+        "Priced the send rule in dollars ($34.91 value per extra order, $0.10 per email) and valued policies out-of-fold against the randomized control, recommending the Mens email to everyone (6.8 extra orders per 1,000 emails, $138 contribution per 1,000 customers) since its effect was broad and the pre-registered model rule earned $18 less per 1,000 customers.",
+        "Showed where targeting pays: on the Womens email the uplift cut avoided 46% of sends, kept 82% of the extra orders and raised per-email yield 53%; on Criteo the X-learner rule avoided 95% of treatments with about 12× the conversions per treatment, turning a loss into a gain.",
+        "Deployed a Streamlit and Plotly dashboard on Streamlit Community Cloud with a send-rule simulator for cost per email and margin, backed by 15 tests, including estimator checks on simulated data with known answers."
+      ]
+    },
+    {
+      "title": "ShelfWise: Demand Forecasting & Inventory Optimization",
+      "subtitle": "Python, LightGBM, PuLP, HiGHS, Streamlit",
+      "date": "2026",
+      "bullets": [
+        "Turned Walmart M5 sales forecasts into daily order quantities for 5,748 item-store series (1,437 California food items in 4 stores, 60% zeros), scoring every result against 84 unseen days in three rolling 28-day windows with every model refit before each.",
+        "Forecast 28 days ahead with one global LightGBM model whose sales features are all lagged at least 28 days, with a unit test for leakage, reaching MASE 1.024 against 1.215 for seasonal naive (−15.7%) and 1.041 for exponential smoothing, best in all 3 windows.",
+        "Fit LightGBM quantile models to jittered sales so integer quantiles stay exact, calibrated within 2 points at the 80/90/95% levels (78.2%, 88.3%, 93.6%) with 7–10% lower pinball loss than a trailing-normal benchmark.",
+        "Set newsvendor order levels at each item's critical ratio, with leftover and stockout costs tied to item price, cutting cost 9.8%, 8.4% and 11.8% versus a textbook safety-stock rule at 80/90/95% service targets and winning in every window.",
+        "At the 90% target, matched the simple rule's fill rate (90.9% vs. 90.6%) while ordering 7% fewer units (24,465 vs. 26,428 a day) and cutting leftover cost 15%, by shifting stock to weekends instead of ordering the same amount every day.",
+        "Showed that ordering the point forecast costs 10–135% more than the simple rule once a missed sale costs more than a leftover, since it stocks to the mean and runs out on 28% of item-days.",
+        "Allocated a capacity-limited daily truck with a linear program (PuLP + HiGHS): at 90% of the usual order the limit binds on 80% of days and costs +$226/day (+3.4%), about half the +$429/day of cutting every order by the same share.",
+        "Priced truck space from the LP's dual at $0.084 per unit of daily capacity (re-solve check $0.082), with weekends at $0.21–0.23 against about $0.01 Tuesday–Thursday; even with a 10% smaller truck, forecast + LP cost 5.3% less than the simple rule with unlimited trucks.",
+        "Built a four-page Streamlit dashboard that re-solves a chosen day's truck allocation live with HiGHS, plus a one-page memo and 19 tests."
+      ]
+    },
+    {
+      "title": "HCareLedger: Medicare Claims Data Mart & Cost Reporting",
+      "subtitle": "SQL, DuckDB, Python, Power BI, Excel",
+      "date": "2026",
+      "bullets": [
+        "Built a claims data mart in SQL on DuckDB from the CMS Synthetic Medicare Claims PUFs, conforming 7 claim types into a star schema (4 fact tables, 5 dimensions) holding 1.89M medical claim lines, 516K Part D fills and 953K enrolled member months.",
+        "Enforced data quality with 60 tests on keys, nulls, relationships, accepted values, ranges and reconciliation; all 54 error-severity tests pass, and the build fails if any does.",
+        "Reported the measures a health plan's actuarial or finance team tracks each month: medical PMPM by service type ($1,345–$1,665 across 2016–2022), admissions per 1,000, top diagnoses by cost and Part D spend per member.",
+        "Built 30-day readmission logic that merges overlapping and same-day-transfer claims into single stays and requires a full 30-day follow-up, giving a 30.8% all-cause and 29.4% unplanned rate over 19,532 index stays.",
+        "Measured cost concentration: the top 5% of members accounted for 45.4% of 2022 spend (41–49% across 2016–2022).",
+        "Caught during profiling that institutional line payments don't reconcile to the claim header (outpatient lines sum to 75% of it), so reported header payments and added a test that checks per-claim totals against CMS to the cent.",
+        "Took eligibility from monthly enrollment flags after finding the annual Part B, Part D and dual-month totals disagreed with them for 3–24% of beneficiary-years, and counted only claims incurred in the member months used as the PMPM denominator.",
+        "Delivered a Power BI report (TMDL semantic model with 33 DAX measures; Cost Trend, Utilization and Readmissions pages) whose check values match the SQL results, and an Excel workbook with Power Query, a PivotTable by service type and an XLOOKUP budget-vs-actual variance sheet.",
+        "Generated the data dictionary from the database, with a test that fails if any column is undocumented."
+      ]
+    },
+    {
       "title": "StockBot: Quantitative Trading Research Platform",
       "subtitle": "Python, scikit-learn, XGBoost, PyTorch",
       "date": "",

@@ -42,6 +42,9 @@ export async function generateMetadata(
 	};
 }
 
+// "Zinzu, Redmond, WA" -> "Zinzu", so the side menu labels stay short
+const companyName = (company: string) => company.split(',')[0];
+
 export default function About(
     { params }: { params: Promise<{ locale: string }> }
 ) {
@@ -71,7 +74,7 @@ export default function About(
         {
             title: about.work.title,
             display: about.work.display,
-            items: about.work.experiences.map(experience => experience.company)
+            items: about.work.experiences.map(experience => companyName(experience.company))
         },
         {
             title: about.projects.title,
@@ -360,7 +363,7 @@ export default function About(
                                             alignItems="baseline"
                                             marginBottom="4">
                                             <Text
-                                                id={experience.company}
+                                                id={companyName(experience.company)}
                                                 variant="heading-strong-l">
                                                 {experience.company}
                                             </Text>
