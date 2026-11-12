@@ -24,6 +24,9 @@ export type ButtonProps = CommonProps & React.ButtonHTMLAttributes<HTMLButtonEle
 export type AnchorProps = CommonProps & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const isExternalLink = (url: string) => /^https?:\/\//.test(url);
+// A file in /public (such as the resume PDF) is not a page; next/link would prefetch it as one,
+// and Vercel answers that prefetch with a 500.
+const isFileLink = (url: string) => /\.[a-z0-9]+(?:[?#].*)?$/i.test(url);
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(({
     variant = 'primary',
@@ -59,13 +62,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(({
     if (href) {
         const isExternal = isExternalLink(href);
 
-        if (isExternal) {
+        if (isExternal || isFileLink(href)) {
             return (
                 <a
                     href={href}
                     ref={ref as React.Ref<HTMLAnchorElement>}
-                    target="_blank"
-                    rel="noreferrer"
+                    {...(isExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
                     {...commonProps}
                     {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
                     {content}
